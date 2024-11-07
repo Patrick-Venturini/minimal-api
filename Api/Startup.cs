@@ -95,6 +95,19 @@ namespace minimal_api
                     ServerVersion.AutoDetect(Configuration.GetConnectionString("MySql"))
                 );
             });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigins",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                    });
+            });
+
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -102,11 +115,13 @@ namespace minimal_api
 
             app.UseSwagger();
             app.UseSwaggerUI();
-            
+
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseCors();
 
 
             app.UseEndpoints(endpoints =>
